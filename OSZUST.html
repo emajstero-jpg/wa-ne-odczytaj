@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walentynka dla Ciebie ❤️</title>
+    <style>
+        body {
+            background-color: white;
+            background-image: url('https://media.istockphoto.com/id/1359953451/vector/white-background-with-red-hearts-valentines-day-pattern-seamless-vector-illustration.jpg?s=612x612&w=0&k=20&c=7kOx1p1L8m7A0q0jC5aO9n2f7j5P4JWm3V8Q2x4Q_4=');
+            background-size: auto; /* Dla powtarzającego się wzoru serc */
+            background-repeat: repeat;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Lekko przezroczyste, aby serduszka były widać */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #f44336;
+            font-size: 24px;
+        }
+        #bearImg {
+            width: 300px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #yesBtn {
+            background-color: #4caf50;
+            color: white;
+        }
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+        }
+        #reveal {
+            display: none;
+            margin-top: 20px;
+        }
+        #loveText {
+            font-size: 28px;
+            color: #f44336;
+            animation: pulse 1.5s infinite;
+        }
+        #bigHeart {
+            font-size: 100px;
+            animation: pulse 1.5s infinite;
+        }
+        #ourPhoto {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+            animation: fadeIn 2s;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="question">
+        <h1>Czy chcesz zostać moją walentynką?</h1>
+        <img id="bearImg" src="https://thumbs.dreamstime.com/b/teddy-bear-holding-big-heart-happy-valentines-day-generative-ai-image-291127899.jpg" alt="Miś z serduszkiem">
+        <div class="buttons">
+            <button id="yesBtn">Tak</button>
+            <button id="noBtn">Nie</button>
+        </div>
+    </div>
+    <div id="reveal">
+        <h2 id="loveText">KOCHAM CIĘ SKARBIE </h2>
+        <div id="bigHeart">❤️</div>
+        <img id="ourPhoto" src=https://i.imgur.com/jjxZsJs.jpeg" alt="Nasze zdjęcie">
+    </div>
+    <canvas id="confetti"></canvas>
+    
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const moveNoBtn = () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        };
+        noBtn.addEventListener('mouseover', moveNoBtn);
+        noBtn.addEventListener('touchstart', moveNoBtn); // Dla telefonów
+
+        const yesBtn = document.getElementById('yesBtn');
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('question').style.display = 'none';
+            document.getElementById('reveal').style.display = 'block';
+            startConfetti();
+        });
+
+        function startConfetti() {
+            const canvas = document.getElementById('confetti');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const ctx = canvas.getContext('2d');
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 5 + 5,
+                    speed: Math.random() * 3 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    p.y += p.speed;
+                    if (p.y > canvas.height) p.y = -p.size;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
